@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#05040a;font-family:'Rajdhani',system-ui,sans-serif}
+a{color:#00f0ff}a:hover{color:#ff2d78}
+input{outline:none}
+*::-webkit-scrollbar{width:0;height:0}
+@keyframes crtFlicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.85}94%{opacity:1}97%{opacity:.95}98%{opacity:1}}
+@keyframes scanBand{0%{top:-15%}100%{top:115%}}
+@keyframes glitchX{0%,90%,100%{transform:translateX(0);clip-path:inset(0 0 0 0)}91%{transform:translateX(-2px);clip-path:inset(10% 0 60% 0)}92%{transform:translateX(2px);clip-path:inset(60% 0 10% 0)}93%{transform:translateX(0)}}
+@keyframes blinkCursor{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes popIn{0%{transform:scale(.92);opacity:0;filter:blur(3px)}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+@keyframes breath{0%,100%{transform:scale(1);box-shadow:0 0 30px rgba(0,240,255,.3)}50%{transform:scale(1.25);box-shadow:0 0 60px rgba(0,240,255,.6)}}
+@keyframes xpPulse{0%,100%{box-shadow:0 0 8px rgba(255,45,120,.6)}50%{box-shadow:0 0 18px rgba(255,45,120,1)}}
+</style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 50% 30%, #0d0916 0%, #05040a 70%); padding: 0;">
+<div style="position: relative; width: min(430px, 100vw); height: min(932px, 100dvh); background: linear-gradient(160deg, #0a0710 0%, #07090d 60%); overflow: hidden; box-shadow: 0 0 60px rgba(255,45,120,.12), 0 0 120px rgba(0,240,255,.06); animation: crtFlicker 6s infinite; font-family: 'Rajdhani', sans-serif; color: #e8e4f2; display: flex; flex-direction: column;">
+
+  <!-- ══════════ ONBOARDING ══════════ -->
+  <sc-if value="{{ isOb }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Onboarding" style="position: absolute; inset: 0; z-index: 30; background: linear-gradient(160deg, #0a0710 0%, #07090d 60%); display: flex; flex-direction: column;">
+
+    <sc-if value="{{ isOb0 }}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px;">
+      <div style="font: 900 40px 'Orbitron', sans-serif; letter-spacing: .04em; color: #ff2d78; text-shadow: 3px 0 rgba(0,240,255,.5), -3px 0 rgba(255,45,120,.5); animation: glitchX 5s infinite;">ASHFIT</div>
+      <div style="font: 13px 'Share Tech Mono', monospace; color: rgba(0,240,255,.7); margin-top: 6px; letter-spacing: .3em;">SYS v2.4 — HUNTER AUGMENTATION OS</div>
+      <div style="margin-top: 36px; font: 13px/2 'Share Tech Mono', monospace; color: rgba(232,228,242,.55);">
+        <div>&gt; BIOLINK............. <span style="color: #00f0ff;">OK</span></div>
+        <div>&gt; NEURAL HANDSHAKE.... <span style="color: #00f0ff;">OK</span></div>
+        <div>&gt; QUEST ENGINE........ <span style="color: #00f0ff;">OK</span></div>
+        <div>&gt; PENALTY DAEMON...... <span style="color: #ff2d78;">ARMED</span></div>
+        <div>&gt; AWAITING HUNTER<span style="animation: blinkCursor 1s infinite;">▮</span></div>
+      </div>
+      <div onClick="{{ obNext }}" style="margin-top: 44px; background: #ff2d78; color: #0a0710; text-align: center; padding: 16px 0; font: 900 16px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); box-shadow: 0 0 24px rgba(255,45,120,.5); cursor: pointer;">▶ INITIALIZE</div>
+      <div onClick="{{ skipOb }}" style="margin-top: 16px; text-align: center; font: 12px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); cursor: pointer; letter-spacing: .15em;">[ SKIP — LOAD DEMO PROFILE ]</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isOb1 }}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px;">
+      <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(0,240,255,.6); letter-spacing: .3em;">// REGISTRATION 1/3</div>
+      <div style="font: 900 24px 'Orbitron', sans-serif; margin-top: 10px;">IDENTIFY YOURSELF</div>
+      <div style="font: 13px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); margin-top: 8px;">CALLSIGN WILL BE BOUND TO YOUR HUNTER LICENSE.</div>
+      <input value="{{ obName }}" onChange="{{ setObName }}" style="margin-top: 28px; background: rgba(0,240,255,.05); border: 1px solid rgba(0,240,255,.5); color: #00f0ff; font: 700 22px 'Rajdhani', sans-serif; letter-spacing: .1em; padding: 14px 16px; width: 100%; box-sizing: border-box; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);">
+      <div onClick="{{ obNext }}" style="margin-top: 28px; background: #ff2d78; color: #0a0710; text-align: center; padding: 15px 0; font: 900 15px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); cursor: pointer;">CONFIRM CALLSIGN</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isOb2 }}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px;">
+      <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(0,240,255,.6); letter-spacing: .3em;">// REGISTRATION 2/3</div>
+      <div style="font: 900 24px 'Orbitron', sans-serif; margin-top: 10px;">SELECT DIRECTIVE</div>
+      <div style="font: 13px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); margin-top: 8px;">PRIMARY GOAL PROGRAM. OTHERS CAN RUN IN PARALLEL.</div>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 24px;">
+        <sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="4">
+          <div onClick="{{ g.onPick }}" style="border: 1px solid {{ g.border }}; background: {{ g.bg }}; padding: 14px 16px; cursor: pointer; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 700 16px 'Rajdhani', sans-serif; letter-spacing: .06em; color: {{ g.fg }};">{{ g.name }}</span><span style="font: 11px 'Share Tech Mono', monospace; color: {{ g.mark }};">{{ g.markTxt }}</span></div>
+            <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 4px;">{{ g.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div onClick="{{ obNext }}" style="margin-top: 24px; background: #ff2d78; color: #0a0710; text-align: center; padding: 15px 0; font: 900 15px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); cursor: pointer;">LOCK IN DIRECTIVE</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isOb3 }}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px;">
+      <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(0,240,255,.6); letter-spacing: .3em;">// REGISTRATION 3/3</div>
+      <div style="font: 900 24px 'Orbitron', sans-serif; margin-top: 10px;">BASELINE SCAN</div>
+      <div style="margin-top: 24px; border: 1px solid rgba(0,240,255,.4); padding: 18px; background: rgba(0,240,255,.03); font: 13px/2.1 'Share Tech Mono', monospace; color: rgba(232,228,242,.7);">
+        <div>CALLSIGN..... <span style="color: #00f0ff;">{{ obName }}</span></div>
+        <div>DIRECTIVE.... <span style="color: #ff2d78;">{{ obGoal }}</span></div>
+        <div>START RANK... E-CLASS</div>
+        <div>DAILY QUESTS. 4 ISSUED / DAY</div>
+        <div>PENALTY...... STAT DECAY AT 00:00</div>
+        <div>DEMO SAVE.... <span style="color: #00f0ff;">DAY 117 · LV.24 · C-CLASS</span></div>
+      </div>
+      <div style="font: 12px 'Share Tech Mono', monospace; color: rgba(255,45,120,.8); margin-top: 16px;">⚠ THE SYSTEM DOES NOT ACCEPT EXCUSES.</div>
+      <div onClick="{{ finishOb }}" style="margin-top: 24px; background: #ff2d78; color: #0a0710; text-align: center; padding: 16px 0; font: 900 16px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); box-shadow: 0 0 24px rgba(255,45,120,.5); cursor: pointer;">REGISTER HUNTER</div>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ STATUS BAR ══════════ -->
+  <div style="display: flex; justify-content: space-between; padding: 14px 20px 0; font: 12px 'Share Tech Mono', monospace; color: rgba(255,45,120,.6); flex: none;">
+    <span>{{ clock }}</span><span>▲ SYNC 98.2% · DAY {{ day }}</span>
+  </div>
+
+  <!-- ══════════ HOME / HUD ══════════ -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Home HUD" style="flex: 1; overflow-y: auto; padding-bottom: 84px;">
+    <!-- header banner -->
+    <div style="margin: 16px 0 0; padding: 18px 20px 16px; background: linear-gradient(90deg, rgba(255,45,120,.14), transparent 70%); border-top: 1px solid rgba(255,45,120,.5); border-bottom: 1px solid rgba(255,45,120,.5); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 40px) 100%, 0 100%);">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="width: 58px; height: 58px; background: rgba(255,45,120,.08); border: 1px solid {{ rankColor }}; clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%); display: flex; align-items: center; justify-content: center; font: 900 28px 'Orbitron', sans-serif; color: {{ rankColor }}; text-shadow: 0 0 16px {{ rankGlow }};">{{ rank }}</div>
+        <div style="flex: 1;">
+          <div style="font: 900 21px 'Orbitron', sans-serif; letter-spacing: .04em; animation: glitchX 6s infinite; text-shadow: 2px 0 rgba(0,240,255,.5), -2px 0 rgba(255,45,120,.5);">{{ name }}</div>
+          <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); margin-top: 3px;">MERC · LV{{ level }} · STREAK {{ streak }} ◆</div>
+        </div>
+        <div style="text-align: right; font: 11px 'Share Tech Mono', monospace; color: #00f0ff;">XP<br><span style="font: 700 18px 'Rajdhani', sans-serif;">{{ xpPct }}%</span></div>
+      </div>
+      <div style="margin-top: 12px; height: 8px; background: rgba(255,45,120,.15); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);">
+        <div style="width: {{ xpPctW }}; height: 8px; background: linear-gradient(90deg, #ff2d78, #ff7ab0); animation: xpPulse 2.4s infinite;"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); margin-top: 5px;"><span>{{ xpLabel }}</span><span>NEXT: LV{{ nextLevel }}</span></div>
+    </div>
+
+    <!-- attributes -->
+    <div style="padding: 16px 20px 0;">
+      <div style="display: flex; justify-content: space-between; font: 10px 'Share Tech Mono', monospace; color: rgba(0,240,255,.55); letter-spacing: .25em; margin-bottom: 8px;"><span>// ATTRIBUTES</span><span style="color: {{ ptsColor }};">{{ ptsLabel }}</span></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;">
+        <sc-for list="{{ statsArr }}" as="st" hint-placeholder-count="5">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 34px; font: 11px 'Share Tech Mono', monospace; color: {{ st.lbl }};">{{ st.k }}</span>
+            <div style="flex: 1; height: 10px; background: rgba(0,240,255,.08); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);"><div style="width: {{ st.w }}; height: 10px; background: {{ st.c }}; box-shadow: 0 0 10px {{ st.glow }};"></div></div>
+            <span style="width: 26px; font: 700 15px 'Rajdhani', sans-serif; color: {{ st.c }}; text-align: right;">{{ st.v }}</span>
+            <sc-if value="{{ canAllocate }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ st.up }}" style="width: 22px; height: 22px; border: 1px solid #ff2d78; color: #ff2d78; display: flex; align-items: center; justify-content: center; font: 700 15px 'Rajdhani', sans-serif; cursor: pointer; background: rgba(255,45,120,.08);">+</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- active gigs -->
+    <div style="padding: 18px 20px 0;">
+      <div style="display: flex; justify-content: space-between; font: 10px 'Share Tech Mono', monospace; letter-spacing: .25em; margin-bottom: 8px;"><span style="color: rgba(255,45,120,.7);">// DAILY GIGS</span><span style="color: #ff2d78; animation: blinkCursor 1.4s infinite;">⚠ {{ penalty }} TO PENALTY</span></div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <sc-for list="{{ quests }}" as="q" hint-placeholder-count="4">
+          <div onClick="{{ q.tap }}" style="background: {{ q.bg }}; border-left: 3px solid {{ q.edge }}; padding: 11px 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); cursor: pointer; opacity: {{ q.op }};">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 700 15px 'Rajdhani', sans-serif; letter-spacing: .05em; text-decoration: {{ q.strike }};">{{ q.title }}</span><span style="font: 11px 'Share Tech Mono', monospace; color: {{ q.stc }};">{{ q.status }}</span></div>
+            <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); margin-top: 4px;">€$ {{ q.xp }} XP · +1 {{ q.stat }} · {{ q.progLabel }}</div>
+            <div style="height: 4px; background: rgba(0,240,255,.1); margin-top: 6px;"><div style="width: {{ q.w }}; height: 4px; background: {{ q.edge }};"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- jack in -->
+    <div style="padding: 18px 20px 0;">
+      <div onClick="{{ startRun }}" style="background: #ff2d78; color: #0a0710; text-align: center; padding: 15px 0; font: 900 16px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); box-shadow: 0 0 24px rgba(255,45,120,.5); cursor: pointer;">▶ JACK IN — START RUN</div>
+    </div>
+
+    <!-- system line -->
+    <div style="padding: 14px 20px 0;">
+      <div style="font: 12px 'Share Tech Mono', monospace; color: rgba(0,240,255,.75); border-left: 2px solid #00f0ff; padding: 8px 12px; background: rgba(0,240,255,.04);">[SYSTEM] DIRECTIVE ISSUED. COMPLETE ALL GIGS BEFORE 00:00.<span style="animation: blinkCursor 1s infinite;">▮</span></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ GIGS / QUESTS ══════════ -->
+  <sc-if value="{{ isGigs }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Quests" style="flex: 1; overflow-y: auto; padding: 0 20px 84px;">
+    <div style="font: 900 22px 'Orbitron', sans-serif; margin-top: 18px;">GIGS</div>
+    <div style="margin-top: 12px; border: 1px solid rgba(255,45,120,.5); background: rgba(255,45,120,.06); padding: 10px 14px; display: flex; justify-content: space-between; font: 12px 'Share Tech Mono', monospace; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);">
+      <span style="color: #ff2d78;">⚠ PENALTY: −2 ALL STATS</span><span style="color: #ff2d78; animation: blinkCursor 1.4s infinite;">{{ penalty }}</span>
+    </div>
+    <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(255,45,120,.7); letter-spacing: .25em; margin: 18px 0 8px;">// DAILY GIGS</div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <sc-for list="{{ quests }}" as="q" hint-placeholder-count="4">
+        <div onClick="{{ q.tap }}" style="background: {{ q.bg }}; border-left: 3px solid {{ q.edge }}; padding: 11px 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); cursor: pointer; opacity: {{ q.op }};">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 700 15px 'Rajdhani', sans-serif; letter-spacing: .05em; text-decoration: {{ q.strike }};">{{ q.title }}</span><span style="font: 11px 'Share Tech Mono', monospace; color: {{ q.stc }};">{{ q.status }}</span></div>
+          <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); margin-top: 4px;">€$ {{ q.xp }} XP · +1 {{ q.stat }} · {{ q.progLabel }} · {{ q.hint }}</div>
+          <div style="height: 4px; background: rgba(0,240,255,.1); margin-top: 6px;"><div style="width: {{ q.w }}; height: 4px; background: {{ q.edge }};"></div></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(0,240,255,.55); letter-spacing: .25em; margin: 20px 0 8px;">// GOAL PROGRAMS</div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <sc-for list="{{ programs }}" as="p" hint-placeholder-count="4">
+        <div style="background: rgba(0,240,255,.04); border: 1px solid {{ p.border }}; padding: 12px 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); opacity: {{ p.op }};">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 700 15px 'Rajdhani', sans-serif; letter-spacing: .05em; color: {{ p.c }};">{{ p.name }}</span><span style="font: 10px 'Share Tech Mono', monospace; color: {{ p.tagC }};">{{ p.tag }}</span></div>
+          <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 4px;">{{ p.desc }}</div>
+          <div style="height: 5px; background: rgba(0,240,255,.1); margin-top: 8px;"><div style="width: {{ p.w }}; height: 5px; background: {{ p.c }}; box-shadow: 0 0 8px {{ p.c }};"></div></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ TRAIN ══════════ -->
+  <sc-if value="{{ isTrain }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Train" style="flex: 1; overflow-y: auto; padding: 0 20px 84px;">
+    <div style="font: 900 22px 'Orbitron', sans-serif; margin-top: 18px;">TRAINING MODULES</div>
+    <div style="font: 12px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); margin-top: 6px;">SELECT MODULE TO JACK IN.</div>
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 18px;">
+      <div onClick="{{ startRun }}" style="border: 1px solid rgba(255,45,120,.55); background: linear-gradient(90deg, rgba(255,45,120,.1), transparent); padding: 18px 16px; cursor: pointer; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 900 18px 'Orbitron', sans-serif; color: #ff2d78;">RUN</span><span style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5);">GPS SIM · SECTOR 4</span></div>
+        <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 6px;">LIVE PACE · DISTANCE · +XP PER KM · FEEDS DAILY GIG</div>
+      </div>
+      <div onClick="{{ goLift }}" style="border: 1px solid rgba(0,240,255,.5); background: linear-gradient(90deg, rgba(0,240,255,.08), transparent); padding: 18px 16px; cursor: pointer; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 900 18px 'Orbitron', sans-serif; color: #00f0ff;">LIFT</span><span style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5);">PUSH DAY · 5 EXERCISES</span></div>
+        <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 6px;">BENCH · OHP · INCLINE · FLY · DIPS — CHECK OFF SETS</div>
+      </div>
+      <div onClick="{{ startMeditate }}" style="border: 1px solid rgba(232,228,242,.3); background: linear-gradient(90deg, rgba(232,228,242,.05), transparent); padding: 18px 16px; cursor: pointer; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font: 900 18px 'Orbitron', sans-serif; color: #e8e4f2;">MEDITATE</span><span style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5);">MINDFULNESS FIRMWARE</span></div>
+        <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 6px;">GUIDED BREATH CYCLE · +INT · LOWERS PENALTY RISK</div>
+      </div>
+    </div>
+    <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(0,240,255,.55); letter-spacing: .25em; margin: 22px 0 8px;">// PRE-PROGRAMMED ROUTINES</div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <sc-for list="{{ routines }}" as="r" hint-placeholder-count="3">
+        <div onClick="{{ r.tap }}" style="background: rgba(0,240,255,.03); border-left: 3px solid rgba(0,240,255,.4); padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font: 600 14px 'Rajdhani', sans-serif; letter-spacing: .05em;">{{ r.name }}</span>
+          <span style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4);">{{ r.meta }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ RUN SESSION ══════════ -->
+  <sc-if value="{{ isRun }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Run session" style="flex: 1; display: flex; flex-direction: column; padding: 0 20px 24px;">
+    <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(255,45,120,.7); letter-spacing: .3em; margin-top: 18px;">// RUN MODULE — SECTOR 4 <span style="animation: blinkCursor 1s infinite;">●</span> REC</div>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+      <div style="font: 900 76px/1 'Orbitron', sans-serif; color: #00f0ff; text-shadow: 0 0 30px rgba(0,240,255,.6), 3px 0 rgba(255,45,120,.4);">{{ runKmStr }}</div>
+      <div style="font: 13px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); letter-spacing: .3em; margin-top: 6px;">KILOMETERS</div>
+      <div style="display: flex; justify-content: center; gap: 34px; margin-top: 34px;">
+        <div><div style="font: 700 26px 'Rajdhani', sans-serif; color: #ff2d78;">{{ runTimeStr }}</div><div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); letter-spacing: .2em;">TIME</div></div>
+        <div><div style="font: 700 26px 'Rajdhani', sans-serif; color: #ff2d78;">{{ runPace }}</div><div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); letter-spacing: .2em;">PACE /KM</div></div>
+        <div><div style="font: 700 26px 'Rajdhani', sans-serif; color: #ff2d78;">{{ runKcal }}</div><div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); letter-spacing: .2em;">KCAL</div></div>
+      </div>
+      <div style="margin: 30px auto 0; width: 80%; height: 8px; background: rgba(0,240,255,.1); clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);"><div style="width: {{ runGigW }}; height: 8px; background: #00f0ff; box-shadow: 0 0 12px rgba(0,240,255,.7);"></div></div>
+      <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(0,240,255,.6); margin-top: 8px;">DAILY GIG: {{ runGigLabel }}</div>
+    </div>
+    <div onClick="{{ endRun }}" style="background: #00f0ff; color: #07090d; text-align: center; padding: 16px 0; font: 900 16px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); box-shadow: 0 0 24px rgba(0,240,255,.4); cursor: pointer;">■ END RUN — UPLOAD DATA</div>
+    <div onClick="{{ abortRun }}" style="margin-top: 12px; text-align: center; font: 12px 'Share Tech Mono', monospace; color: rgba(255,45,120,.7); cursor: pointer; letter-spacing: .15em;">[ ABORT — DISCARD SESSION ]</div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ LIFT SESSION ══════════ -->
+  <sc-if value="{{ isLift }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Lift session" style="flex: 1; display: flex; flex-direction: column; padding: 0 20px 24px; overflow-y: auto;">
+    <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(0,240,255,.7); letter-spacing: .3em; margin-top: 18px;">// LIFT MODULE — PUSH DAY</div>
+    <div style="font: 900 22px 'Orbitron', sans-serif; margin-top: 8px;">IRON TEMPLE</div>
+    <div style="font: 12px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); margin-top: 4px;">{{ liftCount }} / 5 EXERCISES COMPLETE — TAP TO LOG</div>
+    <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 16px; flex: 1;">
+      <sc-for list="{{ lifts }}" as="l" hint-placeholder-count="5">
+        <div onClick="{{ l.tap }}" style="border: 1px solid {{ l.border }}; background: {{ l.bg }}; padding: 13px 16px; cursor: pointer; display: flex; align-items: center; gap: 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);">
+          <div style="width: 24px; height: 24px; border: 1px solid {{ l.boxB }}; color: #07090d; background: {{ l.boxBg }}; display: flex; align-items: center; justify-content: center; font: 700 15px 'Rajdhani', sans-serif;">{{ l.mark }}</div>
+          <div style="flex: 1;">
+            <div style="font: 700 16px 'Rajdhani', sans-serif; letter-spacing: .05em; text-decoration: {{ l.strike }};">{{ l.name }}</div>
+            <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 2px;">{{ l.scheme }}</div>
+          </div>
+          <div style="font: 11px 'Share Tech Mono', monospace; color: {{ l.stC }};">{{ l.st }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div onClick="{{ finishLift }}" style="margin-top: 16px; background: {{ liftBtnBg }}; color: {{ liftBtnFg }}; border: 1px solid #00f0ff; text-align: center; padding: 15px 0; font: 900 15px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); cursor: pointer;">{{ liftBtnLabel }}</div>
+    <div onClick="{{ goHome }}" style="margin-top: 12px; text-align: center; font: 12px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); cursor: pointer; letter-spacing: .15em;">[ BACK TO HUD ]</div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ MEDITATE ══════════ -->
+  <sc-if value="{{ isMed }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Meditate" style="flex: 1; display: flex; flex-direction: column; padding: 0 20px 24px;">
+    <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(0,240,255,.7); letter-spacing: .3em; margin-top: 18px;">// MINDFULNESS FIRMWARE v1.2</div>
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;">
+      <div style="width: 140px; height: 140px; border-radius: 50%; border: 1px solid rgba(0,240,255,.6); background: radial-gradient(circle, rgba(0,240,255,.15), transparent 70%); animation: breath 8s ease-in-out infinite;"></div>
+      <div style="text-align: center;">
+        <div style="font: 700 34px 'Rajdhani', sans-serif; color: #00f0ff;">{{ medTimeStr }}</div>
+        <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); letter-spacing: .25em; margin-top: 4px;">BREATHE WITH THE RING</div>
+      </div>
+    </div>
+    <div onClick="{{ endMeditate }}" style="background: #00f0ff; color: #07090d; text-align: center; padding: 15px 0; font: 900 15px 'Orbitron', sans-serif; letter-spacing: .2em; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); cursor: pointer;">■ END SESSION</div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ VAULT / MILESTONES ══════════ -->
+  <sc-if value="{{ isVault }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Milestones" style="flex: 1; overflow-y: auto; padding: 0 20px 84px;">
+    <div style="font: 900 22px 'Orbitron', sans-serif; margin-top: 18px;">TROPHY VAULT</div>
+    <div style="font: 12px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); margin-top: 6px;">{{ vaultCount }} — SHARE UNLOCKS TO THE FEED.</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;">
+      <sc-for list="{{ milestones }}" as="m" hint-placeholder-count="8">
+        <div style="border: 1px solid {{ m.border }}; background: {{ m.bg }}; padding: 14px; opacity: {{ m.op }}; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);">
+          <div style="font: 26px 'Rajdhani', sans-serif; color: {{ m.c }}; text-shadow: 0 0 12px {{ m.c }};">{{ m.icon }}</div>
+          <div style="font: 700 14px 'Rajdhani', sans-serif; letter-spacing: .05em; margin-top: 8px;">{{ m.title }}</div>
+          <div style="font: 9px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); margin-top: 3px;">{{ m.desc }}</div>
+          <div style="font: 9px 'Share Tech Mono', monospace; color: {{ m.dateC }}; margin-top: 8px;">{{ m.date }}</div>
+          <sc-if value="{{ m.un }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ m.share }}" style="margin-top: 10px; border: 1px solid #ff2d78; color: #ff2d78; text-align: center; padding: 7px 0; font: 700 10px 'Share Tech Mono', monospace; letter-spacing: .15em; cursor: pointer; background: rgba(255,45,120,.06);">◱ SHARE TO IG</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ FEED / ALERTS ══════════ -->
+  <sc-if value="{{ isFeed }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Alerts and reminders" style="flex: 1; overflow-y: auto; padding: 0 20px 84px;">
+    <div style="font: 900 22px 'Orbitron', sans-serif; margin-top: 18px;">FEED</div>
+    <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(0,240,255,.55); letter-spacing: .25em; margin: 16px 0 8px;">// REMINDERS</div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <sc-for list="{{ reminders }}" as="r" hint-placeholder-count="4">
+        <div onClick="{{ r.tap }}" style="display: flex; align-items: center; gap: 12px; border: 1px solid {{ r.border }}; background: rgba(0,240,255,.03); padding: 11px 14px; cursor: pointer; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);">
+          <div style="flex: 1;">
+            <div style="font: 700 15px 'Rajdhani', sans-serif; letter-spacing: .05em; color: {{ r.fg }};">{{ r.label }}</div>
+            <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); margin-top: 2px;">{{ r.time }} · {{ r.days }}</div>
+          </div>
+          <div style="width: 40px; height: 20px; border: 1px solid {{ r.knobB }}; position: relative; background: {{ r.trackBg }};">
+            <div style="position: absolute; top: 2px; left: {{ r.knobL }}; width: 14px; height: 14px; background: {{ r.knobC }}; transition: left .2s;"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(255,45,120,.7); letter-spacing: .25em; margin: 20px 0 8px;">// SYSTEM ALERTS</div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="5">
+        <div style="border-left: 2px solid {{ a.c }}; padding: 8px 12px; background: rgba(232,228,242,.02);">
+          <div style="display: flex; justify-content: space-between; font: 10px 'Share Tech Mono', monospace;"><span style="color: {{ a.c }}; letter-spacing: .15em;">[{{ a.tag }}]</span><span style="color: rgba(232,228,242,.35);">{{ a.time }}</span></div>
+          <div style="font: 13px 'Rajdhani', sans-serif; color: rgba(232,228,242,.75); margin-top: 2px; letter-spacing: .03em;">{{ a.msg }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ NAV ══════════ -->
+  <sc-if value="{{ navOn }}" hint-placeholder-val="{{ true }}">
+  <div style="position: absolute; bottom: 0; left: 0; right: 0; display: flex; background: rgba(10,7,16,.96); border-top: 1px solid rgba(255,45,120,.35); z-index: 10;">
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+      <div onClick="{{ n.tap }}" style="flex: 1; text-align: center; padding: 13px 0 22px; font: 10px 'Share Tech Mono', monospace; color: {{ n.c }}; letter-spacing: .12em; border-top: 2px solid {{ n.bar }}; margin-top: -1px; cursor: pointer;">{{ n.label }}</div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ SYSTEM POPUP ══════════ -->
+  <sc-if value="{{ popupOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position: absolute; inset: 0; z-index: 40; background: rgba(3,2,8,.8); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);">
+    <div style="width: 320px; max-width: 86%; background: #0d0a14; border: 1px solid {{ popup.accent }}; box-shadow: 0 0 40px {{ popup.glow }}, 0 0 20px {{ popup.glow }} inset; padding: 22px 22px 20px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%); animation: popIn .35s ease-out;">
+      <div style="font: 10px 'Share Tech Mono', monospace; color: {{ popup.accent }}; letter-spacing: .3em;">{{ popup.kicker }}</div>
+      <div style="font: 900 26px 'Orbitron', sans-serif; color: {{ popup.accent }}; text-shadow: 0 0 16px {{ popup.glow }}; margin-top: 10px; animation: glitchX 4s infinite;">{{ popup.title }}</div>
+      <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 5px;">
+        <sc-for list="{{ popup.lines }}" as="ln" hint-placeholder-count="2">
+          <div style="font: 13px 'Share Tech Mono', monospace; color: {{ ln.c }};">{{ ln.t }}</div>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <sc-for list="{{ popup.actions }}" as="ac" hint-placeholder-count="1">
+          <div onClick="{{ ac.fn }}" style="flex: 1; text-align: center; padding: 12px 0; font: 900 12px 'Orbitron', sans-serif; letter-spacing: .12em; cursor: pointer; background: {{ ac.bg }}; color: {{ ac.fg }}; border: 1px solid {{ ac.bd }}; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);">{{ ac.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ IG SHARE CARD ══════════ -->
+  <sc-if value="{{ shareOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position: absolute; inset: 0; z-index: 50; background: rgba(3,2,8,.88); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; backdrop-filter: blur(3px);">
+    <div style="font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.5); letter-spacing: .3em;">// STORY PREVIEW 9:16</div>
+    <div style="width: 252px; height: 448px; background: linear-gradient(160deg, #0d0716 0%, #07090d 70%); border: 1px solid rgba(255,45,120,.6); position: relative; overflow: hidden; animation: popIn .35s ease-out;">
+      <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0px, rgba(0,0,0,.16) 1px, transparent 1px, transparent 3px); pointer-events: none;"></div>
+      <div style="padding: 24px 20px; display: flex; flex-direction: column; height: 400px; box-sizing: content-box;">
+        <div style="font: 10px 'Share Tech Mono', monospace; color: #00f0ff; letter-spacing: .3em;">MILESTONE UNLOCKED</div>
+        <div style="font: 46px 'Rajdhani', sans-serif; color: #ff2d78; text-shadow: 0 0 20px rgba(255,45,120,.8); margin-top: 24px;">{{ shareIcon }}</div>
+        <div style="font: 900 24px/1.15 'Orbitron', sans-serif; margin-top: 10px; text-shadow: 2px 0 rgba(0,240,255,.5), -2px 0 rgba(255,45,120,.5);">{{ shareTitle }}</div>
+        <div style="font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.55); margin-top: 8px;">{{ shareDesc }}</div>
+        <div style="flex: 1;"></div>
+        <div style="border-top: 1px solid rgba(255,45,120,.4); padding-top: 12px; display: flex; justify-content: space-between; font: 11px 'Share Tech Mono', monospace; color: rgba(232,228,242,.6);">
+          <span>{{ name }}</span><span style="color: {{ rankColor }};">{{ rank }}-CLASS · LV{{ level }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font: 10px 'Share Tech Mono', monospace; color: rgba(232,228,242,.4); margin-top: 6px;">
+          <span>STREAK {{ streak }} ◆</span><span style="color: #ff2d78;">ASHFIT.SYS</span>
+        </div>
+      </div>
+    </div>
+    <div onClick="{{ shareNow }}" style="width: 252px; background: #ff2d78; color: #0a0710; text-align: center; padding: 14px 0; font: 900 13px 'Orbitron', sans-serif; letter-spacing: .15em; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); box-shadow: 0 0 24px rgba(255,45,120,.5); cursor: pointer;">◱ SHARE TO INSTAGRAM</div>
+    <div onClick="{{ closeShare }}" style="font: 12px 'Share Tech Mono', monospace; color: rgba(232,228,242,.45); cursor: pointer; letter-spacing: .15em;">[ CANCEL ]</div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ TOAST ══════════ -->
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position: absolute; bottom: 96px; left: 20px; right: 20px; z-index: 60; background: #0d0a14; border: 1px solid #00f0ff; box-shadow: 0 0 20px rgba(0,240,255,.3); padding: 12px 16px; font: 12px 'Share Tech Mono', monospace; color: #00f0ff; letter-spacing: .08em; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); animation: popIn .25s ease-out;">{{ toast }}</div>
+  </sc-if>
+
+  <!-- ══════════ CRT OVERLAYS ══════════ -->
+  <div style="position: absolute; inset: 0; pointer-events: none; z-index: 70; opacity: {{ crtOp }};">
+    <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.15) 0px, rgba(0,0,0,.15) 1px, transparent 1px, transparent 3px);"></div>
+    <div style="position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,0,60,.02) 0px, rgba(0,240,255,.02) 1px, transparent 2px, transparent 3px);"></div>
+    <div style="position: absolute; left: 0; right: 0; height: 90px; background: linear-gradient(180deg, transparent, rgba(255,45,120,.05), transparent); animation: scanBand 5s linear infinite;"></div>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,.45) 100%);"></div>
+  </div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 430, &quot;height&quot;: 932}, &quot;crt&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 65, &quot;min&quot;: 0, &quot;max&quot;: 100, &quot;section&quot;: &quot;Display&quot;, &quot;tsType&quot;: &quot;number&quot;}, &quot;demoSpeed&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 25, &quot;min&quot;: 1, &quot;max&quot;: 60, &quot;unit&quot;: &quot;x&quot;, &quot;section&quot;: &quot;Demo&quot;, &quot;tsType&quot;: &quot;number&quot;}, &quot;startScreen&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;onboarding&quot;, &quot;home&quot;], &quot;default&quot;: &quot;onboarding&quot;, &quot;section&quot;: &quot;Demo&quot;, &quot;tsType&quot;: &quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    onboarded: false, obStep: 0, obName: 'V.ASHFORD', obGoal: 'FULL-SPEC FITNESS',
+    screen: 'home',
+    level: 24, xp: 2340, xpMax: 3000, rank: 'C', streak: 12, statPts: 3, day: 117,
+    stats: { STR: 42, AGI: 37, VIT: 51, INT: 28, PER: 33 },
+    quests: [
+      { id: 'run', title: 'RUN 5.0KM — SECTOR 4', xp: 120, stat: 'AGI', total: 5, progress: 3.1, unit: 'KM', done: false, hint: 'TAP TO JACK IN' },
+      { id: 'lift', title: 'PUSH SESSION — IRON TEMPLE', xp: 150, stat: 'STR', total: 5, progress: 0, unit: 'EX', done: false, hint: 'TAP TO OPEN' },
+      { id: 'water', title: 'HYDRATION 2.0L', xp: 40, stat: 'VIT', total: 2, progress: 1.2, unit: 'L', done: false, hint: 'TAP +0.4L' },
+      { id: 'meditate', title: 'MEDITATE 10 MIN', xp: 80, stat: 'INT', total: 10, progress: 10, unit: 'MIN', done: true, hint: 'CLEAR' }
+    ],
+    dailyCleared: false,
+    running: false, runKm: 0, runSec: 0,
+    medSec: 0,
+    lifts: [
+      { name: 'BENCH PRESS', scheme: '4×8 · 60KG', done: false },
+      { name: 'OVERHEAD PRESS', scheme: '3×10 · 35KG', done: false },
+      { name: 'INCLINE DB PRESS', scheme: '3×12 · 22KG', done: false },
+      { name: 'CABLE FLY', scheme: '3×15 · 15KG', done: false },
+      { name: 'TRICEP DIP', scheme: '3×AMRAP · BW', done: false }
+    ],
+    alerts: [
+      { time: '21:02', tag: 'SYSTEM', msg: 'DIRECTIVE ISSUED. COMPLETE ALL DAILY GIGS BEFORE 00:00.', c: '#ff2d78' },
+      { time: '19:40', tag: 'REMINDER', msg: 'HYDRATION CHECKPOINT — 0.8L REMAINING.', c: '#00f0ff' },
+      { time: '17:12', tag: 'STREAK', msg: '12-DAY STREAK ACTIVE. DO NOT BREAK THE CHAIN.', c: '#00f0ff' },
+      { time: '06:00', tag: 'REMINDER', msg: 'MORNING RUN WINDOW OPEN — SECTOR 4 ROUTE LOADED.', c: '#00f0ff' },
+      { time: 'DAY 116', tag: 'SYSTEM', msg: 'VIT +1. RECOVERY METRICS NOMINAL.', c: '#e8e4f2' }
+    ],
+    reminders: [
+      { id: 'r1', label: 'MORNING RUN', time: '06:00', days: 'MON–SAT', on: true },
+      { id: 'r2', label: 'HYDRATION PING', time: 'EVERY 2H', days: 'DAILY', on: true },
+      { id: 'r3', label: 'MEDITATION WINDOW', time: '22:00', days: 'DAILY', on: false },
+      { id: 'r4', label: 'SLEEP PROTOCOL', time: '23:30', days: 'DAILY', on: true }
+    ],
+    milestones: [
+      { id: 'm1', icon: '▲', title: 'FIRST BLOOD', desc: 'FIRST WORKOUT LOGGED', date: 'DAY 001', un: true },
+      { id: 'm2', icon: '◈', title: '10-DAY STREAK', desc: '10 CONSECUTIVE DAYS', date: 'DAY 114', un: true },
+      { id: 'm3', icon: '⬡', title: '100KM LIFETIME', desc: 'CUMULATIVE DISTANCE', date: 'DAY 098', un: true },
+      { id: 'm4', icon: '●', title: 'RANK C ASCENSION', desc: 'PROMOTED TO C-CLASS', date: 'DAY 090', un: true },
+      { id: 'm5', icon: '✦', title: 'RANK B ASCENSION', desc: 'REACH LEVEL 25', date: '', un: false },
+      { id: 'm6', icon: '▼', title: '5AM PROTOCOL', desc: 'TRAIN BEFORE 05:30', date: '', un: false },
+      { id: 'm7', icon: '◆', title: 'IRON 100', desc: '100 LIFT SESSIONS', date: '', un: false },
+      { id: 'm8', icon: '◉', title: 'MARATHON MODULE', desc: 'RUN 42.2KM SINGLE SESSION', date: '', un: false }
+    ],
+    popup: null, shareCard: null, toast: null
+  };
+  pq = [];
+
+  componentDidMount() { this.clockT = setInterval(() => this.forceUpdate(), 1000); }
+  componentWillUnmount() { clearInterval(this.clockT); clearInterval(this.sim); clearTimeout(this.toastT); }
+
+  showToast(msg) {
+    clearTimeout(this.toastT);
+    this.setState({ toast: msg });
+    this.toastT = setTimeout(() => this.setState({ toast: null }), 2600);
+  }
+  pushAlert(tag, msg, c) {
+    const t = new Date().toTimeString().slice(0, 5);
+    this.setState({ alerts: [{ time: t, tag, msg, c }, ...this.state.alerts] });
+  }
+  queuePopup(p) {
+    if (this.state.popup) this.pq.push(p);
+    else this.setState({ popup: p });
+  }
+  dismissPopup() { this.setState({ popup: this.pq.shift() || null }); }
+
+  addXp(n) {
+    let { xp, xpMax, level, statPts, rank } = this.state;
+    xp += n;
+    let leveled = false;
+    while (xp >= xpMax) { xp -= xpMax; level++; statPts += 3; xpMax = Math.round(xpMax * 1.15); leveled = true; }
+    const newRank = level >= 25 ? 'B' : rank;
+    this.setState({ xp, xpMax, level, statPts, rank: newRank });
+    if (leveled) {
+      this.queuePopup({
+        kicker: '// SYSTEM NOTICE', accent: '#ff2d78', glow: 'rgba(255,45,120,.4)',
+        title: 'LEVEL ' + level,
+        lines: [{ t: '+3 STAT POINTS AVAILABLE', c: '#00f0ff' }, { t: 'XP THRESHOLD RAISED TO ' + xpMax, c: 'rgba(232,228,242,.6)' }],
+        actions: [{ label: 'ACKNOWLEDGE', bg: '#ff2d78', fg: '#0a0710', bd: '#ff2d78', fn: () => this.dismissPopup() }]
+      });
+      this.pushAlert('SYSTEM', 'LEVEL UP → LV' + level + '. +3 STAT POINTS.', '#ff2d78');
+    }
+    if (newRank !== rank) {
+      this.pushAlert('SYSTEM', 'RANK ASCENSION: C-CLASS → B-CLASS.', '#ff2d78');
+      this.unlockMilestone('m5');
+    }
+  }
+
+  unlockMilestone(id) {
+    const ms = this.state.milestones.map(m => m.id === id ? { ...m, un: true, date: 'DAY ' + this.state.day } : m);
+    const m = ms.find(m => m.id === id);
+    this.setState({ milestones: ms });
+    this.queuePopup({
+      kicker: '// MILESTONE UNLOCKED', accent: '#00f0ff', glow: 'rgba(0,240,255,.35)',
+      title: m.title,
+      lines: [{ t: m.desc, c: 'rgba(232,228,242,.7)' }, { t: 'ADDED TO TROPHY VAULT', c: '#00f0ff' }],
+      actions: [
+        { label: '◱ SHARE TO IG', bg: '#ff2d78', fg: '#0a0710', bd: '#ff2d78', fn: () => { this.dismissPopup(); this.setState({ shareCard: m }); } },
+        { label: 'LATER', bg: 'transparent', fg: 'rgba(232,228,242,.6)', bd: 'rgba(232,228,242,.3)', fn: () => this.dismissPopup() }
+      ]
+    });
+  }
+
+  completeQuest(id) {
+    const q = this.state.quests.find(q => q.id === id);
+    if (!q || q.done) return;
+    const quests = this.state.quests.map(x => x.id === id ? { ...x, done: true, progress: x.total, hint: 'CLEAR' } : x);
+    const stats = { ...this.state.stats };
+    stats[q.stat] += 1;
+    this.setState({ quests, stats });
+    this.pushAlert('SYSTEM', 'GIG CLEAR: ' + q.title + ' · +' + q.xp + 'XP · +1 ' + q.stat + '.', '#00f0ff');
+    this.queuePopup({
+      kicker: '// GIG REPORT', accent: '#00f0ff', glow: 'rgba(0,240,255,.35)',
+      title: 'QUEST CLEAR',
+      lines: [{ t: q.title, c: 'rgba(232,228,242,.75)' }, { t: '+' + q.xp + ' XP · +1 ' + q.stat, c: '#00f0ff' }],
+      actions: [{ label: 'ACKNOWLEDGE', bg: '#00f0ff', fg: '#07090d', bd: '#00f0ff', fn: () => this.dismissPopup() }]
+    });
+    this.addXp(q.xp);
+    setTimeout(() => this.checkDaily(), 0);
+  }
+
+  checkDaily() {
+    if (this.state.dailyCleared) return;
+    if (this.state.quests.every(q => q.done)) {
+      this.setState({ dailyCleared: true });
+      this.queuePopup({
+        kicker: '// PENALTY DAEMON', accent: '#ff2d78', glow: 'rgba(255,45,120,.4)',
+        title: 'DIRECTIVE CLEAR',
+        lines: [{ t: 'ALL DAILY GIGS COMPLETE', c: 'rgba(232,228,242,.75)' }, { t: 'BONUS +500 XP · PENALTY DISARMED', c: '#00f0ff' }, { t: 'STREAK EXTENDED → ' + (this.state.streak + 1), c: '#ff2d78' }],
+        actions: [{ label: 'ACKNOWLEDGE', bg: '#ff2d78', fg: '#0a0710', bd: '#ff2d78', fn: () => this.dismissPopup() }]
+      });
+      this.setState({ streak: this.state.streak + 1 });
+      this.addXp(500);
+    }
+  }
+
+  // ---- run ----
+  startRun() {
+    clearInterval(this.sim);
+    this.setState({ screen: 'run', running: true, runKm: 0, runSec: 0 });
+    this.sim = setInterval(() => {
+      const sp = this.props.demoSpeed ?? 25;
+      this.setState(s => ({ runSec: s.runSec + 0.25 * sp, runKm: s.runKm + 0.25 * sp * 0.0031 }));
+    }, 250);
+  }
+  endRun() {
+    clearInterval(this.sim);
+    const km = this.state.runKm;
+    const q = this.state.quests.find(q => q.id === 'run');
+    const newProg = Math.min(q.total, +(q.progress + km).toFixed(2));
+    const quests = this.state.quests.map(x => x.id === 'run' ? { ...x, progress: newProg } : x);
+    this.setState({ quests, running: false, screen: 'home' });
+    const bonus = Math.round(km * 10);
+    if (!q.done && newProg >= q.total) {
+      this.completeQuest('run');
+    } else {
+      this.showToast('RUN LOGGED: ' + km.toFixed(2) + ' KM · +' + bonus + ' XP');
+      this.addXp(bonus);
+      this.pushAlert('TRAINING', 'RUN UPLOADED: ' + km.toFixed(2) + ' KM.', '#00f0ff');
+    }
+  }
+  abortRun() {
+    clearInterval(this.sim);
+    this.setState({ running: false, screen: 'train' });
+    this.showToast('RUN ABORTED — NO DATA SAVED');
+  }
+
+  // ---- lift ----
+  toggleLift(i) {
+    const lifts = this.state.lifts.map((l, j) => j === i ? { ...l, done: !l.done } : l);
+    const quests = this.state.quests.map(x => x.id === 'lift' && !x.done ? { ...x, progress: lifts.filter(l => l.done).length } : x);
+    this.setState({ lifts, quests });
+  }
+  finishLift() {
+    const all = this.state.lifts.every(l => l.done);
+    if (!all) { this.showToast('INCOMPLETE — LOG ALL 5 EXERCISES'); return; }
+    this.setState({ screen: 'home' });
+    this.completeQuest('lift');
+  }
+
+  // ---- meditate ----
+  startMeditate() {
+    clearInterval(this.sim);
+    this.setState({ screen: 'meditate', medSec: 0 });
+    this.sim = setInterval(() => {
+      const sp = this.props.demoSpeed ?? 25;
+      this.setState(s => ({ medSec: s.medSec + 0.25 * sp }));
+    }, 250);
+  }
+  endMeditate() {
+    clearInterval(this.sim);
+    this.setState({ screen: 'home' });
+    const q = this.state.quests.find(q => q.id === 'meditate');
+    if (!q.done) this.completeQuest('meditate');
+    else { this.showToast('SESSION LOGGED · +20 XP'); this.addXp(20); }
+  }
+
+  // ---- water ----
+  addWater() {
+    const q = this.state.quests.find(q => q.id === 'water');
+    if (q.done) { this.showToast('HYDRATION ALREADY CLEAR'); return; }
+    const newProg = Math.min(q.total, +(q.progress + 0.4).toFixed(1));
+    const quests = this.state.quests.map(x => x.id === 'water' ? { ...x, progress: newProg } : x);
+    this.setState({ quests });
+    if (newProg >= q.total) this.completeQuest('water');
+    else this.showToast('+0.4L LOGGED · ' + newProg.toFixed(1) + '/2.0L');
+  }
+
+  questTap(id) {
+    const q = this.state.quests.find(q => q.id === id);
+    if (q.done) { this.showToast('GIG ALREADY CLEAR'); return; }
+    if (id === 'run') this.startRun();
+    else if (id === 'lift') this.setState({ screen: 'lift' });
+    else if (id === 'meditate') this.startMeditate();
+    else if (id === 'water') this.addWater();
+  }
+
+  allocate(k) {
+    if (this.state.statPts <= 0) return;
+    const stats = { ...this.state.stats };
+    stats[k] += 1;
+    this.setState({ stats, statPts: this.state.statPts - 1 });
+    this.showToast('+1 ' + k + ' ALLOCATED · ' + (this.state.statPts - 1) + ' PTS LEFT');
+  }
+
+  fmtTime(sec) {
+    const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const onboarded = s.onboarded || (this.props.startScreen ?? 'onboarding') === 'home';
+    const screen = onboarded ? s.screen : 'ob';
+    const cyan = '#00f0ff', mag = '#ff2d78';
+
+    // penalty countdown
+    const mid = new Date(); mid.setHours(24, 0, 0, 0);
+    let d = Math.max(0, mid.getTime() - Date.now());
+    const hh = Math.floor(d / 3600000), mm = Math.floor(d / 60000) % 60, ss = Math.floor(d / 1000) % 60;
+    const pad = n => (n < 10 ? '0' : '') + n;
+    const penalty = pad(hh) + ':' + pad(mm) + ':' + pad(ss);
+
+    const statsArr = Object.entries(s.stats).map(([k, v]) => {
+      const hot = k === 'VIT';
+      return {
+        k, v, w: Math.min(100, v) + '%',
+        c: hot ? mag : cyan, glow: hot ? 'rgba(255,45,120,.7)' : 'rgba(0,240,255,.7)',
+        lbl: hot ? mag : 'rgba(232,228,242,.6)',
+        up: () => this.allocate(k)
+      };
+    });
+
+    const quests = s.quests.map(q => {
+      const pct = Math.min(100, Math.round(q.progress / q.total * 100));
+      return {
+        ...q,
+        w: pct + '%',
+        bg: q.done ? 'rgba(232,228,242,.03)' : (q.progress > 0 ? 'rgba(0,240,255,.05)' : 'rgba(255,45,120,.05)'),
+        edge: q.done ? 'rgba(232,228,242,.25)' : (q.progress > 0 ? cyan : mag),
+        stc: q.done ? cyan : (q.progress > 0 ? cyan : mag),
+        status: q.done ? '✓ CLEAR' : (q.progress > 0 ? pct + '%' : 'QUEUED'),
+        strike: q.done ? 'line-through' : 'none',
+        op: q.done ? .65 : 1,
+        progLabel: q.progress.toFixed(1) + '/' + q.total.toFixed(1) + ' ' + q.unit,
+        tap: () => this.questTap(q.id)
+      };
+    });
+
+    const programs = [
+      { name: 'WEIGHT LOSS PROTOCOL', tag: 'ACTIVE · WEEK 5/12', pct: 34, desc: 'CALORIC DEFICIT + CARDIO DIRECTIVE', c: mag, locked: false },
+      { name: 'FULL-SPEC FITNESS', tag: 'ACTIVE · WEEK 8/16', pct: 52, desc: 'STR / AGI / VIT BALANCED AUGMENTATION', c: cyan, locked: false },
+      { name: 'MINDFULNESS FIRMWARE', tag: 'ACTIVE · WEEK 2/8', pct: 18, desc: 'DAILY MEDITATION + SLEEP PROTOCOL', c: cyan, locked: false },
+      { name: 'STRENGTH AUGMENT MK.II', tag: s.rank === 'B' ? 'UNLOCKED — TAP TO ENROLL' : 'LOCKED — REQUIRES RANK B', pct: 0, desc: 'PROGRESSIVE OVERLOAD DIRECTIVE', c: 'rgba(232,228,242,.5)', locked: s.rank !== 'B' }
+    ].map(p => ({
+      ...p, w: p.pct + '%',
+      border: p.locked ? 'rgba(232,228,242,.15)' : (p.c === mag ? 'rgba(255,45,120,.4)' : 'rgba(0,240,255,.35)'),
+      tagC: p.locked ? 'rgba(255,45,120,.7)' : 'rgba(232,228,242,.45)',
+      op: p.locked ? .55 : 1
+    }));
+
+    const lifts = s.lifts.map((l, i) => ({
+      ...l,
+      tap: () => this.toggleLift(i),
+      border: l.done ? 'rgba(0,240,255,.6)' : 'rgba(232,228,242,.2)',
+      bg: l.done ? 'rgba(0,240,255,.07)' : 'rgba(232,228,242,.02)',
+      boxB: l.done ? cyan : 'rgba(232,228,242,.4)',
+      boxBg: l.done ? cyan : 'transparent',
+      mark: l.done ? '✓' : '',
+      strike: l.done ? 'line-through' : 'none',
+      st: l.done ? 'LOGGED' : 'PENDING',
+      stC: l.done ? cyan : 'rgba(232,228,242,.35)'
+    }));
+    const liftCount = s.lifts.filter(l => l.done).length;
+    const liftAll = liftCount === 5;
+
+    const milestones = s.milestones.map(m => ({
+      ...m,
+      border: m.un ? 'rgba(0,240,255,.4)' : 'rgba(232,228,242,.12)',
+      bg: m.un ? 'rgba(0,240,255,.04)' : 'rgba(232,228,242,.02)',
+      c: m.un ? cyan : 'rgba(232,228,242,.25)',
+      dateC: m.un ? mag : 'rgba(232,228,242,.3)',
+      date: m.un ? 'UNLOCKED · ' + m.date : '▒ LOCKED',
+      op: m.un ? 1 : .6,
+      share: () => this.setState({ shareCard: m })
+    }));
+
+    const reminders = s.reminders.map(r => ({
+      ...r,
+      tap: () => {
+        const rs = this.state.reminders.map(x => x.id === r.id ? { ...x, on: !x.on } : x);
+        this.setState({ reminders: rs });
+        this.showToast(r.label + (r.on ? ' — DISARMED' : ' — ARMED'));
+      },
+      border: r.on ? 'rgba(0,240,255,.4)' : 'rgba(232,228,242,.15)',
+      fg: r.on ? '#e8e4f2' : 'rgba(232,228,242,.45)',
+      knobB: r.on ? cyan : 'rgba(232,228,242,.3)',
+      knobC: r.on ? cyan : 'rgba(232,228,242,.3)',
+      knobL: r.on ? '22px' : '2px',
+      trackBg: r.on ? 'rgba(0,240,255,.12)' : 'transparent'
+    }));
+
+    const navDefs = [
+      { id: 'home', label: '◈\u00A0HUD' }, { id: 'gigs', label: '▣\u00A0GIGS' },
+      { id: 'train', label: '▲\u00A0TRAIN' }, { id: 'vault', label: '◆\u00A0VAULT' },
+      { id: 'feed', label: '◉\u00A0FEED' }
+    ];
+    const navItems = navDefs.map(n => {
+      const active = screen === n.id || (n.id === 'train' && ['run', 'lift', 'meditate'].includes(screen));
+      return { ...n, c: active ? mag : 'rgba(232,228,242,.4)', bar: active ? mag : 'transparent', tap: () => this.setState({ screen: n.id }) };
+    });
+
+    const goalNames = [
+      { name: 'WEIGHT LOSS PROTOCOL', desc: 'CALORIC DEFICIT · CARDIO-WEIGHTED QUESTS' },
+      { name: 'FULL-SPEC FITNESS', desc: 'BALANCED STR / AGI / VIT AUGMENTATION' },
+      { name: 'MINDFULNESS FIRMWARE', desc: 'MEDITATION · SLEEP · INT GROWTH' },
+      { name: 'STRENGTH AUGMENT', desc: 'PROGRESSIVE OVERLOAD · STR PRIORITY' }
+    ];
+    const goalOpts = goalNames.map(g => {
+      const sel = s.obGoal === g.name;
+      return {
+        ...g,
+        onPick: () => this.setState({ obGoal: g.name }),
+        border: sel ? mag : 'rgba(0,240,255,.3)',
+        bg: sel ? 'rgba(255,45,120,.08)' : 'rgba(0,240,255,.03)',
+        fg: sel ? mag : '#e8e4f2',
+        mark: sel ? mag : 'rgba(232,228,242,.3)',
+        markTxt: sel ? '◉ SELECTED' : '○'
+      };
+    });
+
+    const rq = s.quests.find(q => q.id === 'run');
+    const runGigProg = Math.min(rq.total, rq.progress + s.runKm);
+    const pace = s.runKm > 0.01 ? s.runSec / 60 / s.runKm : 0;
+    const paceStr = pace > 0 ? Math.floor(pace) + ':' + pad(Math.round((pace % 1) * 60)) : '—:——';
+
+    const popup = s.popup;
+    const shareM = s.shareCard;
+    const unCount = s.milestones.filter(m => m.un).length;
+
+    return {
+      // meta
+      clock: new Date().toTimeString().slice(0, 5),
+      day: s.day, name: onboarded ? (s.obName || 'V.ASHFORD') : s.obName,
+      level: s.level, nextLevel: s.level + 1, rank: s.rank, streak: s.streak,
+      rankColor: s.rank === 'B' ? cyan : mag,
+      rankGlow: s.rank === 'B' ? 'rgba(0,240,255,.9)' : 'rgba(255,45,120,.9)',
+      xpPct: Math.round(s.xp / s.xpMax * 100),
+      xpPctW: Math.round(s.xp / s.xpMax * 100) + '%',
+      xpLabel: s.xp + ' / ' + s.xpMax + ' XP',
+      penalty,
+      ptsLabel: s.statPts > 0 ? '+' + s.statPts + ' PTS UNSPENT — TAP + TO ALLOCATE' : 'ALL POINTS SPENT',
+      ptsColor: s.statPts > 0 ? mag : 'rgba(232,228,242,.35)',
+      canAllocate: s.statPts > 0,
+      // screens
+      isOb: !onboarded,
+      isOb0: !onboarded && s.obStep === 0, isOb1: !onboarded && s.obStep === 1,
+      isOb2: !onboarded && s.obStep === 2, isOb3: !onboarded && s.obStep === 3,
+      isHome: screen === 'home', isGigs: screen === 'gigs', isTrain: screen === 'train',
+      isRun: screen === 'run', isLift: screen === 'lift', isMed: screen === 'meditate',
+      isVault: screen === 'vault', isFeed: screen === 'feed',
+      navOn: onboarded && !['run', 'lift', 'meditate'].includes(screen),
+      // data
+      statsArr, quests, programs, lifts, milestones, reminders, alerts: s.alerts, navItems, goalOpts,
+      routines: [
+        { name: 'PULL DAY — BACK/BI', meta: '6 EX · 45 MIN', tap: () => this.showToast('ROUTINE LOADED — AVAILABLE TOMORROW') },
+        { name: 'LEG DAY — LOWER SPEC', meta: '5 EX · 50 MIN', tap: () => this.showToast('ROUTINE LOADED — AVAILABLE TOMORROW') },
+        { name: 'HIIT — 20MIN BURN', meta: 'INTERVALS · 20 MIN', tap: () => this.showToast('ROUTINE LOADED — AVAILABLE TOMORROW') }
+      ],
+      // onboarding
+      obName: s.obName, obGoal: s.obGoal,
+      setObName: e => this.setState({ obName: e.target.value.toUpperCase() }),
+      obNext: () => this.setState({ obStep: s.obStep + 1 }),
+      skipOb: () => this.setState({ onboarded: true, screen: 'home' }),
+      finishOb: () => {
+        this.setState({ onboarded: true, screen: 'home' });
+        this.queuePopup({
+          kicker: '// SYSTEM', accent: cyan, glow: 'rgba(0,240,255,.35)',
+          title: 'HUNTER REGISTERED',
+          lines: [{ t: 'WELCOME, ' + (s.obName || 'HUNTER') + '.', c: 'rgba(232,228,242,.75)' }, { t: 'DAILY DIRECTIVES ISSUED. CLOCK IS RUNNING.', c: cyan }],
+          actions: [{ label: 'ACKNOWLEDGE', bg: cyan, fg: '#07090d', bd: cyan, fn: () => this.dismissPopup() }]
+        });
+      },
+      // sessions
+      startRun: () => this.startRun(),
+      endRun: () => this.endRun(),
+      abortRun: () => this.abortRun(),
+      goLift: () => this.setState({ screen: 'lift' }),
+      goHome: () => this.setState({ screen: 'home' }),
+      startMeditate: () => this.startMeditate(),
+      endMeditate: () => this.endMeditate(),
+      finishLift: () => this.finishLift(),
+      runKmStr: s.runKm.toFixed(2),
+      runTimeStr: this.fmtTime(s.runSec),
+      runPace: paceStr,
+      runKcal: Math.round(s.runKm * 62),
+      runGigW: Math.round(runGigProg / rq.total * 100) + '%',
+      runGigLabel: runGigProg.toFixed(1) + ' / ' + rq.total.toFixed(1) + ' KM',
+      medTimeStr: this.fmtTime(s.medSec),
+      liftCount, liftAllDone: liftAll,
+      liftBtnBg: liftAll ? cyan : 'transparent',
+      liftBtnFg: liftAll ? '#07090d' : 'rgba(0,240,255,.5)',
+      liftBtnLabel: liftAll ? '■ COMPLETE SESSION · +150 XP' : 'LOG ALL EXERCISES TO COMPLETE',
+      vaultCount: unCount + ' / ' + s.milestones.length + ' UNLOCKED',
+      // overlays
+      popupOn: !!popup, popup: popup || { kicker: '', title: '', accent: cyan, glow: '', lines: [], actions: [] },
+      shareOn: !!shareM,
+      shareIcon: shareM ? shareM.icon : '', shareTitle: shareM ? shareM.title : '', shareDesc: shareM ? shareM.desc : '',
+      shareNow: () => {
+        this.setState({ shareCard: null });
+        this.showToast('◱ SHARED TO INSTAGRAM STORY ✓');
+        this.pushAlert('SOCIAL', 'MILESTONE BROADCAST TO INSTAGRAM.', mag);
+      },
+      closeShare: () => this.setState({ shareCard: null }),
+      toastOn: !!s.toast, toast: s.toast || '',
+      crtOp: Math.min(1, (this.props.crt ?? 65) / 65)
+    };
+  }
+}
+</script>
+</body>
+</html>
